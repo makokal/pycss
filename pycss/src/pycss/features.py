@@ -52,7 +52,7 @@ def generate_visual_css(rawcss, closeness):
 	""" generate_visual_css(rawcss, closeness)
 	Generate a 1D signal that can be plotted to depict the CSS by taking
 	column maximums. Further checks for close interest points and nicely
-	interpolate for better visuals
+	smooths them with weighted moving average
 	"""
 
 	flat_signal = np.amax(rawcss, axis=0)
