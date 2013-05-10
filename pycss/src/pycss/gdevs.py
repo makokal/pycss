@@ -24,7 +24,8 @@ def _gaussian_kernel(sigma, order, t):
     # where H() is the Hermite polynomial. 
     x = t / (sigma*sqrt2)
     
-    # Depending on the order, calculate the Hermite polynomial already generated from mathematica
+    # Depending on the order, calculate the Hermite polynomial already generated 
+    # from mathematica
     if order<0: 
         raise Exception("The order should not be negative!")    
     elif order==0:
