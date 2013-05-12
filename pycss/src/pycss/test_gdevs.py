@@ -28,6 +28,7 @@ def test_evolution():
     # plt.pcolor(css)
     plt.plot(flt)
 
+
     # test evolve the curve
     # kappa,xx,yy = ev.compute_curvature(curve, 3)
     # xs = ft.find_zero_crossings(kappa)
@@ -62,9 +63,9 @@ def test_3D():
     c = np.array([x, y])
     # rc = smp.resample_curve(c, 400, 0.1, True)
     rc = smp.resample_via_fft(c, 400)
-
-    plt.plot(c[0,:], c[1,:])
-    plt.plot(rc[0,:], rc[1,:])
+	
+	plt.plot(c[0,:],c[1,:])
+	plt.plot(rc[0,:],rc[1,:])
 
     # css,lss = ft.generate_css(c, 600, 0.1)
     # flt = ft.generate_visual_css(css, 2)
