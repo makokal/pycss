@@ -4,11 +4,13 @@ import gdevs as gd
 # import evolution as ev
 import features as ft
 import data_processing as dp
+import sampling as smp
 
 from matplotlib import pylab as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
-
+from scipy.interpolate import UnivariateSpline
+import scipy.signal as sig
 
 def test_evolution():
 	# make a basic synthetic curve
@@ -39,37 +41,66 @@ def test_evolution():
 
 
 def test_3D():
-	from numpy import pi, sin, cos, mgrid
-	dphi, dtheta = pi/250.0, pi/250.0
-	[phi,theta] = mgrid[0:pi+dphi*1.5:dphi,0:2*pi+dtheta*1.5:dtheta]
-	m0 = 4; m1 = 3; m2 = 2; m3 = 3; m4 = 6; m5 = 2; m6 = 6; m7 = 4;
-	r = sin(m0*phi)**m1 + cos(m2*phi)**m3 + sin(m4*theta)**m5 + cos(m6*theta)**m7
-	x = r*sin(phi)*cos(theta)
-	y = r*cos(phi)
-	z = r*sin(phi)*sin(theta)
+	# from numpy import pi, sin, cos, mgrid
+	# dphi, dtheta = pi/250.0, pi/250.0
+	# [phi,theta] = mgrid[0:pi+dphi*1.5:dphi,0:2*pi+dtheta*1.5:dtheta]
+	# m0 = 4; m1 = 3; m2 = 2; m3 = 3; m4 = 6; m5 = 2; m6 = 6; m7 = 4;
+	# r = sin(m0*phi)**m1 + cos(m2*phi)**m3 + sin(m4*theta)**m5 + cos(m6*theta)**m7
+	# x = r*sin(phi)*cos(theta)
+	# y = r*cos(phi)
+	# z = r*sin(phi)*sin(theta)
 
-	print x.shape, y.shape, z.shape
-	# plt.plot(x[:,0],y[:,0])
-	# plt.show()
-
-	# points = np.zeros(shape=(3,len(x)))
-	# points[0,:] = x
-	# points[1,:] = y
-	# points[2,:] = z
-	# # points = np.array([x,y,z]).reshape(3,len(x))
+	# x,y,z = np.loadtxt('../../../../../mThesis/datasets/banana.txt', unpack=True)
+	# points = np.array([x,y,z])
 
 
 	# dpc = dp.ObjectModel(points)
-	# c = dpc.cut_clice_curve(10, 2)
-	# print c
+	# c = dpc.cut_clice_curve(9.3, 2)
+
+	x,y = np.loadtxt('../../../../../mThesis/code/branches/expdata/banana/slice155.txt', unpack=True)
+	c = np.array([x,y])
+	# rc = smp.resample_curve(c, 400, 0.1, True)
+	rc = smp.resample_via_fft(c, 400)
+	
+	plt.plot(c[0,:],c[1,:])
+	plt.plot(rc[0,:],rc[1,:])
+
+	# css,lss = ft.generate_css(c, 600, 0.1)
+	# flt = ft.generate_visual_css(css, 2)
+
+	# plt.plot(flt)
+	# plt.plot(c[0,:], c[1,:], marker='o',color='r', ls='')
+	plt.show()
 
 
 	# plot the data
-	fig = plt.figure()
-	ax = fig.add_subplot(111, projection='3d')
+	# fig = plt.figure()
+	# ax = fig.add_subplot(111, projection='3d')
 	# ax.scatter(x,y,z)
-	ax.scatter(x[:,0],y[:,0], z[:,0])
+	# plt.show()
+
+def test_slicefiles():
+	# load the data from slice files
+	dpc = dp.ObjectModel()
+	slices = dpc.initialize_from_slicefiles('../../../../../mThesis/code/branches/expdata/banana/')
+	print 'Loaded ', len(slices),' files'
+
+	# go over the slices to generate SCSS
+	x,y = np.loadtxt(slices[150], unpack=True)
+	s = UnivariateSpline(x, y, k=5, s=0)
+	xs = np.linspace(x.min(), x.max(), 400)
+	ys = s(xs)
+
+	print ys
+	# plt.plot(x,y)
+	plt.plot(xs,ys)
 	plt.show()
+
+	# c = np.array([x,y])
+	# css,lss = ft.generate_css(c, 600, 0.01)
+	# flt = ft.generate_visual_css(css, 2)
+	# plt.plot(flt)
+	# plt.show()
 
 
 
@@ -88,3 +119,4 @@ if __name__ == '__main__':
 
 	# test_evolution()
 	test_3D()
+	# test_slicefiles()

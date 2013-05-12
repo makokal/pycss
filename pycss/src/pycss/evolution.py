@@ -20,6 +20,9 @@ def compute_curvature(curve, sigma):
 	curve[0,:] and curve[1,:]
 	"""
 
+	if curve[0,:].size < 2:
+		raise Exception("Curve must have at least 2 points")
+
 	sigx = curve[0,:]
 	sigy = curve[1,:]
 	g = gd.gaussian_kernel(sigma, 0, sigx.size, False)

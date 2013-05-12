@@ -34,13 +34,13 @@ def generate_css(curve, max_sigma, step_sigma):
 	for i, sigma in enumerate(srange):
 		# compute curvature
 		kappa,sx,sy = ev.compute_curvature(curve, sigma)
-		# print 'evolution step = %',sigma
 
 		# find interest points
 		xs = find_zero_crossings(kappa)
+		# print 'evolution step ', i, sigma, len(xs)
 
 		# save the interest points
-		if len(xs) > 0:
+		if len(xs) > 0 and sigma < max_sigma-1:
 			for c in xs:
 				css[i,c] = sigma # change to any positive value for image show
 				csslist[0,i], csslist[1,i] = c, sigma
