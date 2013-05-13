@@ -8,15 +8,16 @@ ax = fig.gca(projection='3d')               # to work in 3d
 plt.hold(True)
 
 # load the data 
-scss = np.load('scss_higher_sampling.npy')
+# scss = np.load('bunny_front.npy')
+scss = np.load('scss_football.npy')
 
 a,b = scss.shape
 
 x,y = np.meshgrid(np.arange(a),np.arange(b))
 z = scss[x,y]
 
-# ax.plot_surface(x,y,z, cmap=cm.spectral)
-ax.plot_wireframe(x,y,z, cmap=cm.spectral)
+ax.plot_surface(x,y,z, cmap=cm.spectral)
+# ax.plot_wireframe(x,y,z, cmap=cm.spectral)
 # ax.scatter(x,y,z, cmap=cm.spectral)
 
 ax.set_xlabel('slices')

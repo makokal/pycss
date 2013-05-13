@@ -15,18 +15,27 @@ import scipy.signal as sig
 
 def test_evolution():
     # make a basic synthetic curve
-    curve = np.zeros(shape=(2, 400))
-    t = np.linspace(-4, 4, 400)
+    curve = np.zeros(shape=(2, 200))
+    t = np.linspace(-4, 4, 200)
 
     curve[0,:] = 5*np.cos(t) - np.cos(6*t)
     curve[1,:] = 15*np.sin(t) - np.sin(6*t)
 
+    rc = smp.resample_via_fft(curve, 400)
+
+    # plt.plot(curve[0,:], curve[1,:], color='b')
+    # plt.plot(rc[0,:], rc[1,:], color='r',marker='*',ls='')
+
     # test css
-    css, lss = ft.generate_css(curve, 600, 0.1)
+    css, lss = ft.generate_css(rc, 600, 0.01)
+    ecss,rs,rt,cs = ft.generate_eigen_css(css, True)
     flt = ft.generate_visual_css(css, 5)
     # plt.plot(lss[0,:], lss[1,:], marker='s',color='r', ls='')
     # plt.pcolor(css)
-    plt.plot(flt)
+
+    # plt.plot(flt)
+    # print ecss.shape
+    plt.plot(ecss)
 
 
     # test evolve the curve
@@ -39,7 +48,7 @@ def test_evolution():
 
     # plt.plot(curve[0,xs], curve[1,xs], marker='o',color='r', ls='')
     # plt.plot(xx, yy)
-    plt.show()
+    plt.show(block=True)
 
 
 def test_3D():
@@ -63,9 +72,9 @@ def test_3D():
     c = np.array([x, y])
     # rc = smp.resample_curve(c, 400, 0.1, True)
     rc = smp.resample_via_fft(c, 400)
-	
-	plt.plot(c[0,:],c[1,:])
-	plt.plot(rc[0,:],rc[1,:])
+
+    plt.plot(c[0,:],c[1,:])
+    plt.plot(rc[0,:],rc[1,:])
 
     # css,lss = ft.generate_css(c, 600, 0.1)
     # flt = ft.generate_visual_css(css, 2)
@@ -107,9 +116,9 @@ def test_slicefiles():
 
 
 if __name__ == '__main__':
-    g0, t0 = gd.gaussian_kernel(7, 0, 10, True)
-    g1, t1 = gd.gaussian_kernel(7, 1, None, True)
-    g2, t2 = gd.gaussian_kernel(7, 2, None, True)
+    # g0, t0 = gd.gaussian_kernel(7, 0, 10, True)
+    # g1, t1 = gd.gaussian_kernel(7, 1, None, True)
+    # g2, t2 = gd.gaussian_kernel(7, 2, None, True)
 
     # print g0
     # print np.random.rand(1,10)
@@ -119,6 +128,6 @@ if __name__ == '__main__':
     # plt.plot(t2,g2)
     # plt.show()
 
-    # test_evolution()
-    test_3D()
+    test_evolution()
+    # test_3D()
     # test_slicefiles()

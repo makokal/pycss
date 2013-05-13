@@ -44,8 +44,7 @@ def generate_css(curve, max_sigma, step_sigma):
         # save the interest points
         if len(xs) > 0 and sigma < max_sigma - 1:
             for c in xs:
-                css[i,
-                    c] = sigma  # change to any positive value for image show
+                css[i, c] = sigma  # change to any positive value for image show
                 csslist[0, i], csslist[1, i] = c, sigma
         else:
             return css, csslist
@@ -67,3 +66,30 @@ def generate_visual_css(rawcss, closeness):
     sig = np.convolve(flat_signal, weights)[window - 1:-(window - 1)]
 
     return sig
+
+
+def generate_eigen_css(rawcss, return_all=False):
+    """ generate_eigen_css(rawcss, return_all)
+    Generates Eigen-CSS features
+    """
+    rowsum = np.sum(rawcss, axis=0)
+    csum = np.sum(rawcss, axis=1)
+
+    # hack to trim c
+    # limc = np.amax(csum, axis=None)
+    colsum = csum[0:rowsum.size]
+    # colsum = csum
+
+    freq = np.fft.fft(rowsum)
+    mag = abs(freq)
+
+    tilde_rowsum = np.fft.ifft(mag)
+
+    feature  = np.concatenate([tilde_rowsum, colsum], axis=0)
+
+    if not return_all:
+        return feature
+    else:
+        return feature, rowsum, tilde_rowsum, colsum
+
+
