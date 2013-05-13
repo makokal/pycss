@@ -9,7 +9,8 @@ plt.hold(True)
 
 # load the data 
 # scss = np.load('bunny_front.npy')
-scss = np.load('scss_football.npy')
+# scss = np.load('bunny_side.npy')
+scss = np.load('cup1.npy')
 
 a,b = scss.shape
 
