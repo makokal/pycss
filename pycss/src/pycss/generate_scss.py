@@ -29,10 +29,10 @@ def exp_gen_scss(dir_path, resample_size, sigma_step, smoothing):
     slices = dpc.initialize_from_slicefiles(dir_path)
     print 'Loaded ', len(slices), ' slice files'
 
-    scss = np.zeros(shape=(len(slices), resample_size - 2))  # hack
+    scss = np.zeros(shape=(len(slices), resample_size))  # hack
 
     for i, s in enumerate(slices):
-        scss[i, :] = exp_simple_css(s, resample_size, sigma_step, smoothing)
+        scss[i, :] = exp_simple_css(s, resample_size+(smoothing-1), sigma_step, smoothing)
         print 'Done with slice no: {0} out of {1}'.format(i,len(slices))
 
     return scss
@@ -84,7 +84,7 @@ if __name__ == '__main__':
 
         if options.dpath and options.csstype and options.scss_name:
             print 'scss will be saved as: {0}.npy'.format(options.scss_name)
-            scss = exp_gen_scss(options.dpath, 300, .1, 3)
+            scss = exp_gen_scss(options.dpath, 300, .5, 10)
             np.save(options.scss_name, scss)
 
 

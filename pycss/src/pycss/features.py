@@ -25,14 +25,13 @@ def generate_css(curve, max_sigma, step_sigma):
     Generates a CSS image representation by repetatively smoothing the initial curve L_0 with increasing sigma
     """
 
-    cols = curve[0, :].size
-    rows = max_sigma / step_sigma
+    cols = curve[0, :].size  # width
+    rows = max_sigma / step_sigma  # height
 
     css = np.zeros(shape=(rows, cols))
-    csslist = np.zeros(shape=(2, rows))
+    # csslist = np.zeros(shape=(2, rows))
 
     srange = np.linspace(1, max_sigma - 1, rows)
-
     for i, sigma in enumerate(srange):
         # compute curvature
         kappa, sx, sy = ev.compute_curvature(curve, sigma)
@@ -44,10 +43,11 @@ def generate_css(curve, max_sigma, step_sigma):
         # save the interest points
         if len(xs) > 0 and sigma < max_sigma - 1:
             for c in xs:
-                css[i, c] = sigma  # change to any positive value for image show
-                csslist[0, i], csslist[1, i] = c, sigma
+                css[i, c] = sigma  # change to any positive 
+                # csslist[0, i], csslist[1, i] = c, sigma
+
         else:
-            return css, csslist
+            return css
 
 
 def generate_visual_css(rawcss, closeness):
@@ -65,7 +65,18 @@ def generate_visual_css(rawcss, closeness):
     weights = gd.gaussian_kernel(window, 0, window, False)  # gaussian weights
     sig = np.convolve(flat_signal, weights)[window - 1:-(window - 1)]
 
-    return sig
+
+    maxs = []
+
+    # get maximas
+    w = sig.size
+    print w
+
+    for i in range(1,w-1):
+        if sig[i-1] < sig[i] and sig[i] > sig[i+1]:
+            maxs.append([i,sig[i]])
+
+    return sig, maxs
 
 
 def generate_eigen_css(rawcss, return_all=False):

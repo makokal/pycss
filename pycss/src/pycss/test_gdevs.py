@@ -38,27 +38,30 @@ def convex_hull(points):
 
 def test_evolution():
 
-    x,y = np.loadtxt('../../../../../mThesis/datasets/experiments/balls/ex5/slice150.txt', unpack=True)
-    c = np.array([x,y])
-    b = c.tolist()
-    # h = np.array( convex_hull(b) )
-    h =  np.sort(c, axis=0)
-    f =  np.sort(c, axis=1)
+    # x,y = np.loadtxt('../../../../../mThesis/datasets/experiments/bananas/ex5/slice150.txt', unpack=True)
+    # c = np.array([x,y])
+    # b = c.tolist()
+    # # h = np.array( convex_hull(b) )
+    # h =  np.sort(c, axis=0)
+    # f =  np.sort(c, axis=1)
+    # rc = smp.resample_via_fft(c, 302)
 
     # plt.plot(c[0,:], c[1,:], marker='o',color='r', ls='')
-    plt.plot(h[0,:], f[1,:])
-    # plt.plot(c[0,:])
-    # plt.plot(h[0,:])
-    # plt.plot(h[1,:])
+    # # plt.plot(c[0,:], c[1,:])
+    # plt.plot(rc[0,:], rc[1,:])
+    # # plt.plot(h[0,:], f[1,:])
+    # # plt.plot(c[0,:])
+    # # plt.plot(h[0,:])
+    # # plt.plot(h[1,:])
 
     # make a basic synthetic curve
-    # curve = np.zeros(shape=(2, 200))
-    # t = np.linspace(-4, 4, 200)
+    curve = np.zeros(shape=(2, 200))
+    t = np.linspace(-4, 4, 200)
 
-    # curve[0,:] = 5*np.cos(t) - np.cos(6*t)
-    # curve[1,:] = 15*np.sin(t) - np.sin(6*t)
+    curve[0,:] = 5*np.cos(t) - np.cos(6*t)
+    curve[1,:] = 15*np.sin(t) - np.sin(6*t)
 
-    # rc = smp.resample_via_fft(curve, 302)
+    rc = smp.resample_via_fft(curve, 302)
 
     # # test scss continuity
     # scss = np.zeros(shape=(300, 300))  # hack
@@ -70,7 +73,15 @@ def test_evolution():
 
     # np.save('synthetic', scss)
 
-
+    css = ft.generate_css(rc, 600, .01)
+    vis, m = ft.generate_visual_css(css, 3)
+    # plt.plot(rc[0,:], rc[1,:])
+    plt.plot(vis)
+    mv = np.array(m)
+    plt.plot( mv[:,0], mv[:,1], marker='o',color='r', ls='')
+    # mv = vis[m]
+    # plt.plot(m,mv)
+    print m
     # plt.plot(curve[0,xs], curve[1,xs], marker='o',color='r', ls='')
     # plt.plot(xx, yy)
     plt.show(block=True)

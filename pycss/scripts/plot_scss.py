@@ -10,7 +10,10 @@ plt.hold(True)
 # load the data 
 # scss = np.load('bunny_front.npy')
 # scss = np.load('bunny_side.npy')
-scss = np.load('ball4.npy')
+scss = np.load('banana2.npy')
+
+# basic filering
+scss[scss > 50] = 0
 
 a,b = scss.shape
 
@@ -21,8 +24,9 @@ ax.plot_surface(x,y,z, cmap=cm.spectral)
 # ax.plot_wireframe(x,y,z, cmap=cm.spectral)
 # ax.scatter(x,y,z, cmap=cm.spectral)
 
-ax.set_xlabel('slices')
+ax.set_xlabel('Data slices ')
 ax.set_ylabel('t (curve parameter)')
 ax.set_zlabel('Sigma (smoothing)')
+# plt.colorbar(ax)
 
 plt.show()
