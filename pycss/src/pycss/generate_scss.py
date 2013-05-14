@@ -84,7 +84,7 @@ if __name__ == '__main__':
 
         if options.dpath and options.csstype and options.scss_name:
             print 'scss will be saved as: {0}.npy'.format(options.scss_name)
-            scss = exp_gen_scss(options.dpath, 300, 1, 3)
+            scss = exp_gen_scss(options.dpath, 300, .1, 3)
             np.save(options.scss_name, scss)
 
 

@@ -13,38 +13,63 @@ from scipy.interpolate import UnivariateSpline
 import scipy.signal as sig
 
 
+TURN_LEFT, TURN_RIGHT, TURN_NONE = (1, -1, 0)
+
+
+def turn(p, q, r):
+    return cmp((q[0] - p[0])*(r[1] - p[1]) - (r[0] - p[0])*(q[1] - p[1]), 0)
+
+
+def _keep_left(hull, r):
+    while len(hull) > 1 and turn(hull[-2], hull[-1], r) != TURN_LEFT:
+            hull.pop()
+    if not len(hull) or hull[-1] != r:
+        hull.append(r)
+    return hull
+
+ 
+def convex_hull(points):
+    """Returns points on convex hull of an array of points in CCW order."""
+    points = sorted(points)
+    l = reduce(_keep_left, points, [])
+    u = reduce(_keep_left, reversed(points), [])
+    return l.extend(u[i] for i in xrange(1, len(u) - 1)) or l
+
+
 def test_evolution():
+
+    x,y = np.loadtxt('../../../../../mThesis/datasets/experiments/balls/ex5/slice150.txt', unpack=True)
+    c = np.array([x,y])
+    b = c.tolist()
+    # h = np.array( convex_hull(b) )
+    h =  np.sort(c, axis=0)
+    f =  np.sort(c, axis=1)
+
+    # plt.plot(c[0,:], c[1,:], marker='o',color='r', ls='')
+    plt.plot(h[0,:], f[1,:])
+    # plt.plot(c[0,:])
+    # plt.plot(h[0,:])
+    # plt.plot(h[1,:])
+
     # make a basic synthetic curve
-    curve = np.zeros(shape=(2, 200))
-    t = np.linspace(-4, 4, 200)
+    # curve = np.zeros(shape=(2, 200))
+    # t = np.linspace(-4, 4, 200)
 
-    curve[0,:] = 5*np.cos(t) - np.cos(6*t)
-    curve[1,:] = 15*np.sin(t) - np.sin(6*t)
+    # curve[0,:] = 5*np.cos(t) - np.cos(6*t)
+    # curve[1,:] = 15*np.sin(t) - np.sin(6*t)
 
-    rc = smp.resample_via_fft(curve, 400)
+    # rc = smp.resample_via_fft(curve, 302)
 
-    # plt.plot(curve[0,:], curve[1,:], color='b')
-    # plt.plot(rc[0,:], rc[1,:], color='r',marker='*',ls='')
+    # # test scss continuity
+    # scss = np.zeros(shape=(300, 300))  # hack
 
-    # test css
-    css, lss = ft.generate_css(rc, 600, 0.01)
-    ecss,rs,rt,cs = ft.generate_eigen_css(css, True)
-    flt = ft.generate_visual_css(css, 5)
-    # plt.plot(lss[0,:], lss[1,:], marker='s',color='r', ls='')
-    # plt.pcolor(css)
+    # for i in range(300):
+    #     css, lss = ft.generate_css(rc, 600, 1)
+    #     scss[i, :] = ft.generate_visual_css(css, 3)
+    #     print 'Done with slice no: {0} out of {1}'.format(i, 300)
 
-    # plt.plot(flt)
-    # print ecss.shape
-    plt.plot(ecss)
+    # np.save('synthetic', scss)
 
-
-    # test evolve the curve
-    # kappa,xx,yy = ev.compute_curvature(curve, 3)
-    # xs = ft.find_zero_crossings(kappa)
-    # print xs
-    # plt.plot(kappa)
-    # plt.plot(kappa[xs])
-    # plt.plot(curve[0,:], curve[1,:])
 
     # plt.plot(curve[0,xs], curve[1,xs], marker='o',color='r', ls='')
     # plt.plot(xx, yy)
