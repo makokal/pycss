@@ -72,9 +72,9 @@ def generate_visual_css(rawcss, closeness):
     w = sig.size
     print w
 
-    for i in range(1,w-1):
-        if sig[i-1] < sig[i] and sig[i] > sig[i+1]:
-            maxs.append([i,sig[i]])
+    for i in range(1, w - 1):
+        if sig[i - 1] < sig[i] and sig[i] > sig[i + 1]:
+            maxs.append([i, sig[i]])
 
     return sig, maxs
 

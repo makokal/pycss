@@ -80,12 +80,12 @@ def reduce_nmf(X, components, retall=False):
 		return X_nmf, components_, nmf
 
 
-def classify_svm(X, Y):
+def classify_svm(X, Y, ctitle, poslabels):
 
 	X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, Y, test_size=0.2, random_state=0)
 
-	C = 1.0
-	svc = svm.SVC(kernel='rbf', C=C, degree=5, gamma=0.7, probability=True, verbose=False)
+	C = 4.0
+	svc = svm.SVC(kernel='poly', C=C, degree=3, gamma=0.7, probability=True, verbose=False)
 	svc.fit(X_train, y_train)
 	print svc
 	
@@ -97,7 +97,7 @@ def classify_svm(X, Y):
 	for i, (train, test) in enumerate(cv):
 		probas_ = svc.fit(X[train], Y[train]).predict_proba(X[test])
 		# Compute ROC curve and area the curve
-		fpr, tpr, thresholds = roc_curve(Y[test], probas_[:, 1], pos_label=5)
+		fpr, tpr, thresholds = roc_curve(Y[test], probas_[:, 1], pos_label=poslabels)
     	mean_tpr += interp(mean_fpr, fpr, tpr)
     	mean_tpr[0] = 0.0
     	roc_auc = auc(fpr, tpr)
@@ -105,14 +105,15 @@ def classify_svm(X, Y):
 
 	plt.plot([0, 1], [0, 1], '--', color=(0.6, 0.6, 0.6), label='Luck')
 	plt.legend(loc="lower right")
+	plt.title(ctitle)
 	plt.show(block=True)
 
 
 	# print svc.score(X_test, y_test)
 	# print svc.score(X, Y)
 
-	# scores = cross_validation.cross_val_score(svc, X, Y, cv=3)
-	# print scores
+	scores = cross_validation.cross_val_score(svc, X, Y, cv=2)
+	print scores
 
 
 def plot_projections(Xp, Y, name):
@@ -132,7 +133,9 @@ def plot_projections(Xp, Y, name):
 	plt.plot(Xp[magentas, 0], Xp[magentas, 1], "mo")
 	plt.plot(Xp[yellows, 0], Xp[yellows, 1], "yo")
 	plt.title(name)
-	plt.legend(['Coffee cup', 'Football', 'Beer bottle', 'Cereal box', 'Banana'])
+	plt.xlabel('1st Component')
+	plt.ylabel('2nd Component')
+	# plt.legend(['Coffee cup', 'Football', 'Beer bottle', 'Cereal box', 'Banana'], loc=3)
 
 
 
@@ -142,25 +145,56 @@ if __name__ == '__main__':
     # load data from current dir
     dnames = {'cup1.npy' : 1, 'cup2.npy' : 1, 'cup3.npy' : 1, 'cup4.npy' : 1, 'cup5.npy' : 1, 'ball1.npy' : 2, 'ball2.npy' : 2, 'ball3.npy' : 2, 'ball4.npy' : 2, 'ball5.npy' : 2, 'banana1.npy' : 5, 'banana2.npy' : 5, 'banana3.npy' : 5, 'banana4.npy' : 5, 'banana5.npy' : 5, 'box1.npy' : 4, 'box2.npy' : 4, 'box3.npy' : 4, 'box4.npy' : 4, 'box5.npy' : 4, 'bottle1.npy' : 3, 'bottle2.npy' : 3, 'bottle3.npy' : 3, 'bottle4.npy' : 3, 'bottle5.npy' : 3}
 
-    d_train = {'cup1.npy' : 1, 'cup2.npy' : 1, 'cup3.npy' : 1, 'cup4.npy' : 1, 'cup5.npy' : 1, 'ball1.npy' : 2, 'ball2.npy' : 2, 'ball3.npy' : 2, 'ball4.npy' : 2, 'ball5.npy' : 2, 'banana1.npy' : 5, 'banana2.npy' : 5, 'banana3.npy' : 5, 'banana4.npy' : 5, 'banana5.npy' : 5, 'box1.npy' : 4, 'box2.npy' : 4, 'box3.npy' : 4, 'box4.npy' : 4, 'box5.npy' : 4, 'bottle1.npy' : 3, 'bottle2.npy' : 3, 'bottle3.npy' : 3, 'bottle4.npy' : 3, 'bottle5.npy' : 3}
+    dmaxs = {'cup1_maxs.npy' : 1, 'cup2_maxs.npy' : 1, 'cup3_maxs.npy' : 1, 'cup4_maxs.npy' : 1, 'cup5_maxs.npy' : 1, 'ball1_maxs.npy' : 2, 'ball2_maxs.npy' : 2, 'ball3_maxs.npy' : 2, 'ball4_maxs.npy' : 2, 'ball5_maxs.npy' : 2, 'banana1_maxs.npy' : 5, 'banana2_maxs.npy' : 5, 'banana3_maxs.npy' : 5, 'banana4_maxs.npy' : 5, 'banana5_maxs.npy' : 5, 'box1_maxs.npy' : 4, 'box2_maxs.npy' : 4, 'box3_maxs.npy' : 4, 'box4_maxs.npy' : 4, 'box5_maxs.npy' : 4, 'bottle1_maxs.npy' : 3, 'bottle2_maxs.npy' : 3, 'bottle3_maxs.npy' : 3, 'bottle4_maxs.npy' : 3, 'bottle5_maxs.npy' : 3}
 
-    X, Y = load_and_pack_data(dnames, 20, 20)
+    # X, Y = load_and_pack_data(dnames, 100, 100)
+    X, Y = load_and_pack_data(dnames, 100, 100)
+    # plot_projections(X, Y, 'Original Data')
     
-    # X_pca = reduce_pca(X, 30)    
+    X_pca, pca = reduce_pca(X, 10000, True)    
     # plot_projections(X_pca, Y, 'Projection by PCA')
 
-    # X_kpca, X_back = reduce_kpca(X, 'rbf')    
-    # plot_projections(X_kpca, Y, 'Projection by KPCA in Feature space')
+    # plt.figure()
+    # plt.plot(np.cumsum(pca.explained_variance_))
+    # plt.title('Explained Variance')
+    # plt.xlabel('Component')
+    # plt.ylabel('Variance')
+    # plt.grid
+
+    X_kpca, X_back = reduce_kpca(X, 'rbf')    
+    # plot_projections(X_kpca, Y, 'Projection by Kernel PCA')
     # plot_projections(X_back, Y, 'Projection by KPCA Backprojected')
 
-    # X_nmf, nmf_cmps = reduce_nmf(X, 20)    
-    # plot_projections(X_nmf, Y, 'NMF Projection')
+    X_nmf, nmf_cmps = reduce_nmf(X, 20)    
+    # plot_projections(X_nmf, Y, 'NMF Projection ')
     # print nmf_cmps
 
 
     # plt.show(block=True)
 
-    # testing svm
-    print Y[0:9]
-    classify_svm(X[0:9], Y[0:9])
+    # testing 2 class svm
+    c1 = Y == 2
+    c2 = Y == 3
+
+    cby = np.append( Y[c1], Y[c2], axis=0)
+    np.append( cby, Y[c1], axis=0)
+    np.append( cby, Y[c2], axis=0)
+
+    cbx = np.append( X[c1], X[c2], axis=0)
+    np.append( cbx, X[c1], axis=0)
+    np.append( cbx, X[c2], axis=0)
+    classify_svm(cbx, cby, 'Original Data SVM', 2)
+
+    # cbx = np.append( X_kpca[c1], X_kpca[c2], axis=0)
+    # classify_svm(cbx, cby, 'KPCA SVM', 2)
+
+    # cbx = np.append( X_pca[c1], X_pca[c2], axis=0)
+    # classify_svm(cbx, cby, 'PCA SVM', 2)
+
+    # cbx = np.append( X_nmf[c1], X_nmf[c2], axis=0)
+    # classify_svm(cbx, cby, 'NMF SVM', 2)
+
+
+    # classify_svm(cbx, cby, 'PCA SVM')
+    # classify_svm(X, Y)
 

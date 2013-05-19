@@ -72,4 +72,9 @@ def resample_via_fft(curve, samples):
     rx = resample(curve[0,:], samples)
     ry = resample(curve[1,:], samples)
 
+    # rsig = resample(curve, samples, axis=0)
+
     return np.array([rx, ry])
+    # return rsig
+
+    

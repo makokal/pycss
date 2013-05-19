@@ -16,9 +16,9 @@ def exp_simple_css(curve_path, resample_size, sigma_step, smoothing):
     x, y = np.loadtxt(curve_path, unpack=True)
     c = np.array([x, y])
     rc = smp.resample_via_fft(c, resample_size)
-    css, lss = ft.generate_css(rc, 600, sigma_step)
-    flt = ft.generate_visual_css(css, smoothing)
-    return flt
+    css = ft.generate_css(rc, 600, sigma_step)
+    flt, mxs = ft.generate_visual_css(css, smoothing)
+    return flt, mxs
 
 
 def exp_gen_scss(dir_path, resample_size, sigma_step, smoothing):
@@ -30,12 +30,17 @@ def exp_gen_scss(dir_path, resample_size, sigma_step, smoothing):
     print 'Loaded ', len(slices), ' slice files'
 
     scss = np.zeros(shape=(len(slices), resample_size))  # hack
+    maxs = np.zeros(shape=(len(slices), resample_size))  # hack
 
     for i, s in enumerate(slices):
-        scss[i, :] = exp_simple_css(s, resample_size+(smoothing-1), sigma_step, smoothing)
+        scss[i, :], mxs = exp_simple_css(s, resample_size+(smoothing-1), sigma_step, smoothing)
+        ma = np.transpose( np.array(mxs) )
+        mz = np.zeros(resample_size)
+        mz[ma[0,:].tolist()] = ma[1,:] 
+        maxs[i, :] = mz
         print 'Done with slice no: {0} out of {1}'.format(i,len(slices))
 
-    return scss
+    return scss, maxs
 
 
 def exp_eigen_css(curve_path, resample_size, sigma_step, return_all=False):
@@ -45,7 +50,7 @@ def exp_eigen_css(curve_path, resample_size, sigma_step, return_all=False):
     x, y = np.loadtxt(curve_path, unpack=True)
     c = np.array([x, y])
     rc = smp.resample_via_fft(c, resample_size)
-    css, lss = ft.generate_css(rc, 600, sigma_step)
+    css = ft.generate_css(rc, 600, sigma_step)
     ecss = ft.generate_eigen_css(css, return_all)
     return ecss
 
@@ -84,8 +89,9 @@ if __name__ == '__main__':
 
         if options.dpath and options.csstype and options.scss_name:
             print 'scss will be saved as: {0}.npy'.format(options.scss_name)
-            scss = exp_gen_scss(options.dpath, 300, .5, 10)
+            scss, maxs = exp_gen_scss(options.dpath, 300, .5, 10)
             np.save(options.scss_name, scss)
+            np.save((options.scss_name + '_maxs'), maxs)
 
 
     # cpath = '../../../../../mThesis/code/branches/expdata/bunny_side/slice145.txt'

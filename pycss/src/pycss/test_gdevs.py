@@ -38,16 +38,32 @@ def convex_hull(points):
 
 def test_evolution():
 
-    # x,y = np.loadtxt('../../../../../mThesis/datasets/experiments/bananas/ex5/slice150.txt', unpack=True)
-    # c = np.array([x,y])
-    # b = c.tolist()
-    # # h = np.array( convex_hull(b) )
-    # h =  np.sort(c, axis=0)
-    # f =  np.sort(c, axis=1)
+    # x,y = np.loadtxt('../../../../../mThesis/datasets/experiments/boxes/ex5/slice150.txt', unpack=True)
+    # c = np.array([x, y])
+    
+    # # cart to polar then sort then back
+    # r = np.sqrt(np.square(c[0, :]) + np.square(c[1, :]))
+    # theta = np.arctan2(c[1, :], c[0, :])
+
+    # pa = np.vstack((r, theta))
+    # print pa.shape, r.shape, theta.shape
+    # pas = pa[pa[:, 1].argsort()]
+
+    # ctx = pas[0, :] * np.cos(pas[1, :])
+    # cty = pas[0, :] * np.sin(pas[1, :])
+    # ct = np.vstack((ctx, cty))
+
+
+    # fig = plt.figure()
+    # ax = fig.add_axes([0.1, 0.1, 0.8, 0.8], polar=True, axisbg='#d5de9c')
+    # ax.plot(pas[1, :], pas[0, :], color='#ee8d18', lw=3)
+
     # rc = smp.resample_via_fft(c, 302)
 
     # plt.plot(c[0,:], c[1,:], marker='o',color='r', ls='')
-    # # plt.plot(c[0,:], c[1,:])
+    # plt.plot(c[0,:], c[1,:], color='#ee8d18', lw=3)
+    # plt.plot(ct[0,:], ct[1,:])
+
     # plt.plot(rc[0,:], rc[1,:])
     # # plt.plot(h[0,:], f[1,:])
     # # plt.plot(c[0,:])
@@ -55,13 +71,13 @@ def test_evolution():
     # # plt.plot(h[1,:])
 
     # make a basic synthetic curve
-    curve = np.zeros(shape=(2, 200))
-    t = np.linspace(-4, 4, 200)
+    curve = np.zeros(shape=(2, 50))
+    t = np.linspace(-4, 4, 50)
 
     curve[0,:] = 5*np.cos(t) - np.cos(6*t)
     curve[1,:] = 15*np.sin(t) - np.sin(6*t)
 
-    rc = smp.resample_via_fft(curve, 302)
+    rc = smp.resample_via_fft(curve, 400)
 
     # # test scss continuity
     # scss = np.zeros(shape=(300, 300))  # hack
@@ -73,17 +89,18 @@ def test_evolution():
 
     # np.save('synthetic', scss)
 
-    css = ft.generate_css(rc, 600, .01)
-    vis, m = ft.generate_visual_css(css, 3)
-    # plt.plot(rc[0,:], rc[1,:])
-    plt.plot(vis)
-    mv = np.array(m)
-    plt.plot( mv[:,0], mv[:,1], marker='o',color='r', ls='')
-    # mv = vis[m]
-    # plt.plot(m,mv)
-    print m
-    # plt.plot(curve[0,xs], curve[1,xs], marker='o',color='r', ls='')
-    # plt.plot(xx, yy)
+    plt.plot(curve[0,:], curve[1,:], marker='.',color='r', ls='')
+    plt.plot(rc[0,:], rc[1,:])
+
+    # css = ft.generate_css(rc, 600, .01)
+    # vis, m = ft.generate_visual_css(css, 3)
+    # plt.plot(vis)
+    # mv = np.array(m)
+    # plt.plot( mv[:,0], mv[:,1], marker='o',color='r', ls='')
+    # plt.legend(['CSS curve','Maxima'])
+    # plt.xlabel('t (Curve parameter) ')
+    # plt.ylabel(r'$\sigma$, evolution')
+
     plt.show(block=True)
 
 
