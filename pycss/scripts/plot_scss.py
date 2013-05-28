@@ -2,6 +2,7 @@ from mpl_toolkits.mplot3d import *
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import cm
+from scipy.ndimage import filters
 
 fig = plt.figure()
 ax = fig.gca(projection='3d')               # to work in 3d
@@ -10,10 +11,11 @@ plt.hold(True)
 # load the data 
 # scss = np.load('bunny_front.npy')
 # scss = np.load('bunny_side.npy')
-scss = np.load('cup3.npy')
+scss_raw = np.load('bunnyZ.npy')
 
 # basic filering
-scss[scss > 200] = 0
+scss = filters.gaussian_filter(scss_raw, 3)
+# scss[scss > 200] = 0
 
 a,b = scss.shape
 
