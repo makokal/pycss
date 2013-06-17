@@ -8,13 +8,12 @@ from sklearn import svm
 
 def rebin(a, shape):
     # resize a numpy 2d array to given size
-    sh = shape[0],a.shape[0]//shape[0],shape[1],a.shape[1]//shape[1]
+    sh = shape[0], a.shape[0]//shape[0], shape[1], a.shape[1]//shape[1]
     return a.reshape(sh).mean(-1).mean(1)
 
 
-def load_and_pack_data(data, lenx,leny):
+def load_and_pack_data(data, lenx, leny):
     # get the data and pack it as [Training Labels]
-
     Xdata = np.zeros(shape=(len(data), (lenx*leny)))
     Ydata = np.zeros(len(data))
 
@@ -22,16 +21,16 @@ def load_and_pack_data(data, lenx,leny):
     for f, v in data.items():
         # print f, v, idx
         d = np.load(f)
-        Xdata[idx, :] = rebin(d, [lenx,leny]).reshape(lenx*leny)
+        Xdata[idx, :] = rebin(d, [lenx, leny]).reshape(lenx*leny)
         Ydata[idx] = v
         idx += 1
     # print Ydata
     return Xdata, Ydata
 
 
-dnames = {'cup1.npy' : 1, 'cup2.npy' : 1, 'cup3.npy' : 1, 'cup4.npy' : 1, 'cup5.npy' : 1, 'ball1.npy' : 2, 'ball2.npy' : 2, 'ball3.npy' : 2, 'ball4.npy' : 2, 'ball5.npy' : 2, 'banana1.npy' : 5, 'banana2.npy' : 5, 'banana3.npy' : 5, 'banana4.npy' : 5, 'banana5.npy' : 5, 'box1.npy' : 4, 'box2.npy' : 4, 'box3.npy' : 4, 'box4.npy' : 4, 'box5.npy' : 4, 'bottle1.npy' : 3, 'bottle2.npy' : 3, 'bottle3.npy' : 3, 'bottle4.npy' : 3, 'bottle5.npy' : 3}
+dnames = {'cup1.npy': 1, 'cup2.npy': 1, 'cup3.npy': 1, 'cup4.npy': 1, 'cup5.npy': 1, 'ball1.npy': 2, 'ball2.npy': 2, 'ball3.npy': 2, 'ball4.npy': 2, 'ball5.npy' : 2, 'banana1.npy' : 5, 'banana2.npy' : 5, 'banana3.npy' : 5, 'banana4.npy' : 5, 'banana5.npy' : 5, 'box1.npy' : 4, 'box2.npy' : 4, 'box3.npy' : 4, 'box4.npy' : 4, 'box5.npy' : 4, 'bottle1.npy' : 3, 'bottle2.npy' : 3, 'bottle3.npy' : 3, 'bottle4.npy' : 3, 'bottle5.npy' : 3}
 
-X, Y = load_and_pack_data(dnames, 100, 100)
+X, Y = load_and_pack_data(dnames, 50, 50)
 
 # we create 40 separable points
 # np.random.seed(0)
