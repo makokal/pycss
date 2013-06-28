@@ -96,7 +96,6 @@ def gaussian_kernel(sigma, order=0, N=None, returnt=False):
         return k
 
 
-
 def gaussian_kernel2D(mu, cov, samples):
     """ gaussian_kernel2D(mu, cov, samples)
     2D gaussian kernel with the soecified means and covariances
@@ -105,4 +104,3 @@ def gaussian_kernel2D(mu, cov, samples):
     g2 = np.random.multivariate_normal(mu, cov, samples)
 
     return g2
-
