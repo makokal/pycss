@@ -13,7 +13,7 @@ def find_zero_crossings(kappa):
     crossings = []
 
     for i in range(0, kappa.size - 2):
-        if (kappa[i] < 0.0 and kappa[i + 1] > 0.0 ) or \
+        if (kappa[i] < 0.0 and kappa[i + 1] > 0.0) or \
                 (kappa[i] > 0.0 and kappa[i + 1] < 0.0):
             crossings.append(i)
 
@@ -65,7 +65,6 @@ def generate_visual_css(rawcss, closeness):
     weights = gd.gaussian_kernel(window, 0, window, False)  # gaussian weights
     sig = np.convolve(flat_signal, weights)[window - 1:-(window - 1)]
 
-
     maxs = []
 
     # get maximas
@@ -96,11 +95,9 @@ def generate_eigen_css(rawcss, return_all=False):
 
     tilde_rowsum = np.fft.ifft(mag)
 
-    feature  = np.concatenate([tilde_rowsum, colsum], axis=0)
+    feature = np.concatenate([tilde_rowsum, colsum], axis=0)
 
     if not return_all:
         return feature
     else:
         return feature, rowsum, tilde_rowsum, colsum
-
-
