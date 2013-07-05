@@ -21,6 +21,10 @@ def exp_simple_css(curve_path, resample_size, sigma_step, smoothing):
     return flt, mxs
 
 
+def filtering(params):
+    """docstring for filtering"""
+    pass
+
 def exp_gen_scss(dir_path, resample_size, sigma_step, smoothing):
     """ exp_gen_scss(dir_path, resample_size, sigma_step, smoothing)
     experimenting with scss

@@ -4,9 +4,9 @@ import numpy as np
 import glob
 
 
-class ObjectModel():
-
+class ObjectModel(object):
     """Simpl 3D object as a set of point x,y,z given an a numpy array """
+
     def __init__(self):
         self.points = []
         # nothing to do here ;P
@@ -50,3 +50,6 @@ class ObjectModel():
         self.slice_files = glob.glob(dir_path + "*.txt")
 
         return self.slice_files
+
+    def load_from_json(self):
+        raise("NotImplemented Yet")
