@@ -1,10 +1,6 @@
-'''
-Created on Aug 12, 2013
 
-@author: batman
-'''
 
-from scale_space.utils import gaussian_kernel, compute_curvature
+from utils import gaussian_kernel, compute_curvature
 import numpy as np
 
 class CurvatureScaleSpace(object):
