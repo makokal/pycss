@@ -1,6 +1,6 @@
 
 
-from css import CurvatureScaleSpace
+from css import CurvatureScaleSpace, SlicedCurvatureScaleSpace
 import numpy as np
 import pylab as plt
 

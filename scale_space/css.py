@@ -100,3 +100,22 @@ class CurvatureScaleSpace(object):
         else:
             return feature, rowsum, tilde_rowsum, colsum
 
+
+class SlicedCurvatureScaleSpace(CurvatureScaleSpace):
+    """Sliced Curvature Scale Space"""
+    def __init__(self, params):
+        pass
+
+
+    def generate_scss(self, curves, resample_size, max_sigma, step_sigma):
+        """ generate_scss
+        Generate the SCSS image
+        """
+
+        scss = np.zeros(shape=(len(curves), resample_size))  # TODO - fix this hack
+        # maxs = np.zeros(shape=(len(curves), resample_size)) 
+
+        for i, curve in enumerate(curves):
+            scss[i, :] = self.generate_css(curve, max_sigma, step_sigma)
+
+        return scss
