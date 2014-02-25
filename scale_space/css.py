@@ -9,7 +9,7 @@ class CurvatureScaleSpace(object):
     '''
 
 
-    def __init__(self, params):
+    def __init__(self):
         pass
 
     def find_zero_crossings(self, kappa):
@@ -31,8 +31,8 @@ class CurvatureScaleSpace(object):
         Generates a CSS image representation by repetatively smoothing the initial curve L_0 with increasing sigma
         """
 
-        cols = curve[0, :].size  
-        rows = max_sigma / step_sigma  
+        cols = curve[0, :].size
+        rows = max_sigma / step_sigma
         css = np.zeros(shape=(rows, cols))
 
         srange = np.linspace(1, max_sigma - 1, rows)
@@ -45,7 +45,7 @@ class CurvatureScaleSpace(object):
             # save the interest points
             if len(xs) > 0 and sigma < max_sigma - 1:
                 for c in xs:
-                    css[i, c] = sigma  # change to any positive 
+                    css[i, c] = sigma  # change to any positive
 
             else:
                 return css
@@ -103,7 +103,7 @@ class CurvatureScaleSpace(object):
 
 class SlicedCurvatureScaleSpace(CurvatureScaleSpace):
     """Sliced Curvature Scale Space"""
-    def __init__(self, params):
+    def __init__(self):
         pass
 
 
@@ -113,7 +113,7 @@ class SlicedCurvatureScaleSpace(CurvatureScaleSpace):
         """
 
         scss = np.zeros(shape=(len(curves), resample_size))  # TODO - fix this hack
-        # maxs = np.zeros(shape=(len(curves), resample_size)) 
+        # maxs = np.zeros(shape=(len(curves), resample_size))
 
         for i, curve in enumerate(curves):
             scss[i, :] = self.generate_css(curve, max_sigma, step_sigma)

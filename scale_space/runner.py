@@ -18,7 +18,7 @@ def simple_signal(size):
 
 def run():
     curve = simple_signal(600)
-    c = CurvatureScaleSpace(None)
+    c = CurvatureScaleSpace()
     cs = c.generate_css(curve, 600, 0.01)
     vcs = c.generate_visual_css(cs, 9)
     # ecs = c.generate_eigen_css(cs)
