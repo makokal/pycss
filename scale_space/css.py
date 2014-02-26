@@ -4,9 +4,13 @@ from utils import gaussian_kernel, compute_curvature
 import numpy as np
 
 class CurvatureScaleSpace(object):
-    '''
-    Curvature Scale Space
-    '''
+    """ Curvature Scale Space
+
+    A simple curvature scale space implementation based on 
+    Mohkatarian et. al. paper. Full algorithm detailed in 
+    Okal msc thesis
+
+    """
 
 
     def __init__(self):
@@ -102,7 +106,11 @@ class CurvatureScaleSpace(object):
 
 
 class SlicedCurvatureScaleSpace(CurvatureScaleSpace):
-    """Sliced Curvature Scale Space"""
+    """ Sliced Curvature Scale Space
+
+    A implementation of the SCSS algorithm as detailed in Okal thesis
+
+    """
     def __init__(self):
         pass
 

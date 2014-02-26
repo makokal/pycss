@@ -58,6 +58,25 @@ def gaussian_kernel(sigma, order=0, N=None, returnt=False):
     """ gaussian_kernel(sigma, order, N, returnt)
     Compute the gaussian kernel given a width and derivative order and optionally
     the length.
+
+    Parameters
+    -------------
+    sigma : float
+        Width of the Gaussian kernel
+    order : int 
+        Derivative order of the kernel
+    N : int, optional
+        Number of samples to return
+    returnt : Bool 
+        Whether or not to return the abscissa
+
+    Returns
+    -----------
+    k : float
+        The samples
+    t : float
+        Sample indices
+
     """
 
     # checking inputs
@@ -116,11 +135,19 @@ def smooth_signal(signal, kernel):
 
 def compute_curvature(curve, sigma):
     """ compute_curvature(curve, sigma)
-    Compute the curvature of a 2D curve as given Mohkatarian
+    Compute the curvature of a 2D curve as given in Mohkatarian et. al.
     and return the curvature signal at the given sigma
 
     Components of the 2D curve are:
     curve[0,:] and curve[1,:]
+
+    Parameters
+    -------------
+    curve : numpy matrix
+        Two row matrix representing 2D curve
+    sigma : float
+        Kernel width
+
     """
 
     if curve[0,:].size < 2:
