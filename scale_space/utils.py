@@ -63,11 +63,11 @@ def gaussian_kernel(sigma, order=0, N=None, returnt=False):
     -------------
     sigma : float
         Width of the Gaussian kernel
-    order : int 
+    order : int
         Derivative order of the kernel
     N : int, optional
         Number of samples to return
-    returnt : Bool 
+    returnt : Bool
         Whether or not to return the abscissa
 
     Returns
@@ -150,11 +150,11 @@ def compute_curvature(curve, sigma):
 
     """
 
-    if curve[0,:].size < 2:
+    if curve[0, :].size < 2:
         raise Exception("Curve must have at least 2 points")
 
-    sigx = curve[0,:]
-    sigy = curve[1,:]
+    sigx = curve[0, :]
+    sigy = curve[1, :]
     g = gaussian_kernel(sigma, 0, sigx.size, False)
     g_s = gaussian_kernel(sigma, 1, sigx.size, False)
     g_ss = gaussian_kernel(sigma, 2, sigx.size, False)
@@ -178,7 +178,7 @@ def rebin(a, shape):
 def load_and_pack_data(data, lenx, leny):
     """ load_and_pack_data(data, lenx, leny)
     Given a dictionary of training data with {data :label},
-    loads the data into a pair X,Y 
+    loads the data into a pair X,Y
     """
 
     Xdata = np.zeros(shape=(len(data), (lenx * leny)))

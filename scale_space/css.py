@@ -3,15 +3,15 @@
 from utils import gaussian_kernel, compute_curvature
 import numpy as np
 
+
 class CurvatureScaleSpace(object):
     """ Curvature Scale Space
 
-    A simple curvature scale space implementation based on 
-    Mohkatarian et. al. paper. Full algorithm detailed in 
+    A simple curvature scale space implementation based on
+    Mohkatarian et. al. paper. Full algorithm detailed in
     Okal msc thesis
 
     """
-
 
     def __init__(self):
         pass
@@ -28,7 +28,6 @@ class CurvatureScaleSpace(object):
                 crossings.append(i)
 
         return crossings
-
 
     def generate_css(self, curve, max_sigma, step_sigma):
         """ generate_css(curve, max_sigma, step_sigma)
@@ -113,7 +112,6 @@ class SlicedCurvatureScaleSpace(CurvatureScaleSpace):
     """
     def __init__(self):
         pass
-
 
     def generate_scss(self, curves, resample_size, max_sigma, step_sigma):
         """ generate_scss
