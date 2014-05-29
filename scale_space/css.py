@@ -35,7 +35,7 @@ class CurvatureScaleSpace(object):
         """
 
         cols = curve[0, :].size
-        rows = max_sigma / step_sigma
+        rows = max_sigma // step_sigma
         css = np.zeros(shape=(rows, cols))
 
         srange = np.linspace(1, max_sigma - 1, rows)
